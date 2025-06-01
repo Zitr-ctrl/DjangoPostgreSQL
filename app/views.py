@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from .models import Producto
 
 def lista_productos(request):
     productos = Producto.objects.all()
     return render(request, 'app/lista.html', {'productos': productos})
 
+@csrf_exempt
 def crear_producto(request):
     errores = []
     nombre = descripcion = stock = ''
@@ -54,6 +56,7 @@ def crear_producto(request):
         'producto': None
     })
 
+@csrf_exempt
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
     errores = []
@@ -103,6 +106,7 @@ def editar_producto(request, producto_id):
         'stock': producto.stock
     })
 
+@csrf_exempt
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
     producto.delete()
